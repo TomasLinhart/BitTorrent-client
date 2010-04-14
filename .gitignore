@@ -13,6 +13,6 @@ Thumbs.db
 *.pdb
 *.exe.config
 *.exe
-.manifest
-.png
-.zip
+*.manifest
+*.png
+*.zip
