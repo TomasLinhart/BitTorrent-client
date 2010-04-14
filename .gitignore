@@ -1,3 +1,18 @@
+_ReSharper.*
+Bin
+obj
+
+.DS_Store
+Thumbs.db
 
 *.user
-Debug/*
+*.suo
+
+*.xap
+*.dll
+*.pdb
+*.exe.config
+*.exe
+.manifest
+.png
+.zip
