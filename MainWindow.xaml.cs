@@ -15,6 +15,7 @@ namespace BitTorrent_client
         private TorrentStatus[] _currentFilter;
 
         public ObservableCollection<TorrentData> TorrentCollection { get; private set; }
+        // TODO: Has to be private?
         public ObservableCollection<TorrentData> FilteredCollection { get; private set; }
 
         public MainWindow()
@@ -22,7 +23,7 @@ namespace BitTorrent_client
             TorrentCollection = new ObservableCollection<TorrentData>();
             FilteredCollection = new ObservableCollection<TorrentData>();
             InitializeComponent();
-            _currentFilter = new[] { TorrentStatus.Finished, TorrentStatus.Paused };
+            _currentFilter = new[] { TorrentStatus.Downloading, TorrentStatus.Seeding, TorrentStatus.Stopped, TorrentStatus.Hashing };
             TorrentCollection.CollectionChanged += OnTorrentCollectionChanged;
 
             listBox.SelectionChanged += OnListBoxSelectionChanged;
@@ -37,17 +38,18 @@ namespace BitTorrent_client
         #region FOR TESTING ONLY
         private void SetTestData()
         {
-            TorrentCollection.Add(new TorrentData { TorrentName = "test", Status = TorrentStatus.Finished });
-            TorrentCollection.Add(new TorrentData { TorrentName = "test", Status = TorrentStatus.Paused });
-            TorrentCollection.Add(new TorrentData { TorrentName = "test", Status = TorrentStatus.Stopped });
+            TorrentCollection.Add(new TorrentData { TorrentName = "HashingTest", Status = TorrentStatus.Hashing });
+            TorrentCollection.Add(new TorrentData { TorrentName = "DownloadingTest", Status = TorrentStatus.Downloading });
+            TorrentCollection.Add(new TorrentData { TorrentName = "StoppedTest", Status = TorrentStatus.Stopped });
+            TorrentCollection.Add(new TorrentData { TorrentName = "SeedingTest", Status = TorrentStatus.Seeding });
         }
 
         private void OnTimerTick(object sender, EventArgs e)
         {
-            TorrentCollection.Add(new TorrentData { TorrentName = "hi", Status = TorrentStatus.Paused });
-            TorrentCollection.First().TorrentName = "qwer";
+            TorrentCollection.Add(new TorrentData { TorrentName = "NewlyAdded...", Status = TorrentStatus.Stopped });
+            TorrentCollection.First().TorrentName = "ChangedName";
             TorrentCollection.First().Priority = 3;
-            TorrentCollection.First().Status = TorrentStatus.Finished;
+            TorrentCollection.First().Status = TorrentStatus.Hashing;
             TorrentCollection.First().Progress = 7.5;
 
         }
@@ -75,22 +77,23 @@ namespace BitTorrent_client
             var listBoxItem = (((ListBox)sender).SelectedItem as ListBoxItem);
             if (listBoxItem != null)
             {
+                // TODO: Am i doing it right?
                 switch (listBoxItem.Content.ToString())
                 {
                     case "Downloading":
-                        _currentFilter = new[] { TorrentStatus.Paused };
+                        _currentFilter = new[] { TorrentStatus.Downloading };
                         break;
                     case "Completed":
-                        _currentFilter = new[] { TorrentStatus.Paused };
+                        _currentFilter = new[] { TorrentStatus.Seeding };
                         break;
                     case "Active":
-                        _currentFilter = new[] { TorrentStatus.Paused };
+                        _currentFilter = new[] { TorrentStatus.Seeding, TorrentStatus.Downloading};
                         break;
                     case "Inactive":
-                        _currentFilter = new[] { TorrentStatus.Paused };
+                        _currentFilter = new[] { TorrentStatus.Stopped };
                         break;
                     default:
-                        _currentFilter = new[] { TorrentStatus.Finished, TorrentStatus.Paused, TorrentStatus.Stopped };
+                        _currentFilter = new[] { TorrentStatus.Downloading, TorrentStatus.Seeding, TorrentStatus.Stopped, TorrentStatus.Hashing };
                         break;
                 }
             }

@@ -8,9 +8,10 @@ namespace BitTorrent_client
 {
     public enum TorrentStatus
     {
-        Paused = 0,
-        Finished = 1,
-        Stopped = 2
+        Stopped = 0,
+        Seeding = 1,
+        Downloading = 2,
+        Hashing = 3
     } ;
 
     public class TorrentData : INotifyPropertyChanged
