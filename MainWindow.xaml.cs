@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Microsoft.Win32;
 
 namespace BitTorrent_client
 {
@@ -40,13 +41,14 @@ namespace BitTorrent_client
             InitializeComponent();
             _currentFilter = new[] { TorrentStatus.Downloading, TorrentStatus.Seeding, TorrentStatus.Stopped, TorrentStatus.Hashing };
             TorrentCollection.CollectionChanged += OnTorrentCollectionChanged;
+            addButton.Click += OnAddButtonClick;
 
+            removeButton.Click += OnRemoveButtonClick;
             startButton.Click += OnStartButtonClick;
             pauseButton.Click += OnPauseButtonClick;
             stopButton.Click += OnStopButtonClick;
             downButton.Click += OnDownButtonClick;
             upButton.Click += OnUpButtonClick;
-            removeButton.Click += OnRemoveButtonClick;
 
             listView.SelectionChanged += OnListViewSelectionChanged;
 
@@ -60,11 +62,25 @@ namespace BitTorrent_client
             #endregion
         }
 
+        void OnAddButtonClick(object sender, RoutedEventArgs e)
+        {
+            var fileDialog = new OpenFileDialog
+                                  {
+                                      Filter = "Torrent Files (*.torrent)|*.torrent"
+                                  };
+
+            fileDialog.ShowDialog();
+
+            if (String.IsNullOrEmpty(fileDialog.FileName)) return;
+
+            // TODO: torrent file add logic here
+        }
+
         void OnRemoveButtonClick(object sender, RoutedEventArgs e)
         {
             if (_selectedTorrents != null)
             {
-                    foreach (var selectedTorrent in _selectedTorrents)
+                foreach (var selectedTorrent in _selectedTorrents)
                 {
                     // TODO: Remove button action for each selected torrent
                     //TorrentCollection.Remove((TorrentData) selectedTorrent);

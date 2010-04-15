@@ -17,6 +17,21 @@
         </Menu>
         <ToolBarPanel DockPanel.Dock="Top">
             <ToolBar>
+                <Button x:Name="addButton" IsEnabled="True">
+                    <Image Width="32" Height="32">
+                        <Image.Source>
+                            <BitmapImage UriSource="pack://application:,,/Resources/add.png" />
+                        </Image.Source>
+                    </Image>
+                </Button>
+                <Button x:Name="removeButton" IsEnabled="False">
+                    <Image Width="32" Height="32">
+                        <Image.Source>
+                            <BitmapImage UriSource="pack://application:,,/Resources/remove.png" />
+                        </Image.Source>
+                    </Image>
+                </Button>
+                <Separator />
                 <Button x:Name="startButton" IsEnabled="False">
                     <Image Width="32" Height="32">
                         <Image.Source>
@@ -54,13 +69,6 @@
                     </Image>
                 </Button>
                 <Separator />
-                <Button x:Name="removeButton" IsEnabled="False">
-                    <Image Width="32" Height="32">
-                        <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,/Resources/remove.png" />
-                        </Image.Source>
-                    </Image>
-                </Button>
             </ToolBar>
         </ToolBarPanel>
         <StatusBar DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
