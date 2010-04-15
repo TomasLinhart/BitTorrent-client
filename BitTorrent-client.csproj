@@ -60,11 +60,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Images.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Images.resx</DependentUpon>
-    </Compile>
     <Compile Include="TorrentData.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -97,10 +92,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Images.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Images.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -108,9 +99,15 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Resources\round_up_arrow.png" />
+    <Resource Include="Resources\pause.png" />
+    <Resource Include="Resources\remove.png" />
+    <Resource Include="Resources\start.png" />
+    <Resource Include="Resources\stop.png" />
+    <Resource Include="Resources\up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\down.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

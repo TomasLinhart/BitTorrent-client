@@ -17,66 +17,47 @@
         </Menu>
         <ToolBarPanel DockPanel.Dock="Top">
             <ToolBar>
-                <Button>
-                    <Image Width="24" Height="24">
+                <Button x:Name="startButton">
+                    <Image Width="32" Height="32">
                         <Image.Source>
-                            <BitmapImage UriSource="Resources/round_up_arrow.png" />
+                            <BitmapImage UriSource="pack://application:,,/Resources/start.png" />
                         </Image.Source>
                     </Image>
                 </Button>
                 <Button>
-                    <Image Width="24" Height="24">
+                    <Image Width="32" Height="32">
                         <Image.Source>
-                            <BitmapImage UriSource="Resources/round_up_arrow.png" />
+                            <BitmapImage UriSource="pack://application:,,/Resources/pause.png" />
                         </Image.Source>
                     </Image>
                 </Button>
                 <Button>
-                    <Image Width="24" Height="24">
+                    <Image Width="32" Height="32">
                         <Image.Source>
-                            <BitmapImage UriSource="Resources/round_up_arrow.png" />
+                            <BitmapImage UriSource="pack://application:,,/Resources/stop.png" />
+                        </Image.Source>
+                    </Image>
+                </Button>
+                <Separator />
+                <Button>
+                    <Image Width="32" Height="32">
+                        <Image.Source>
+                            <BitmapImage UriSource="pack://application:,,/Resources/down.png" />
                         </Image.Source>
                     </Image>
                 </Button>
                 <Button>
-                    <Image Width="24" Height="24">
+                    <Image Width="32" Height="32">
                         <Image.Source>
-                            <BitmapImage UriSource="Resources/round_up_arrow.png" />
+                            <BitmapImage UriSource="pack://application:,,/Resources/up.png" />
                         </Image.Source>
                     </Image>
                 </Button>
+                <Separator />
                 <Button>
-                    <Image Width="24" Height="24">
+                    <Image Width="32" Height="32">
                         <Image.Source>
-                            <BitmapImage UriSource="Resources/round_up_arrow.png" />
-                        </Image.Source>
-                    </Image>
-                </Button>
-                <Button>
-                    <Image Width="24" Height="24">
-                        <Image.Source>
-                            <BitmapImage UriSource="Resources/round_up_arrow.png" />
-                        </Image.Source>
-                    </Image>
-                </Button>
-                <Button>
-                    <Image Width="24" Height="24">
-                        <Image.Source>
-                            <BitmapImage UriSource="Resources/round_up_arrow.png" />
-                        </Image.Source>
-                    </Image>
-                </Button>
-                <Button>
-                    <Image Width="24" Height="24">
-                        <Image.Source>
-                            <BitmapImage UriSource="Resources/round_up_arrow.png" />
-                        </Image.Source>
-                    </Image>
-                </Button>
-                <Button>
-                    <Image Width="24" Height="24">
-                        <Image.Source>
-                            <BitmapImage UriSource="Resources/round_up_arrow.png" />
+                            <BitmapImage UriSource="pack://application:,,/Resources/remove.png" />
                         </Image.Source>
                     </Image>
                 </Button>
@@ -96,22 +77,20 @@
             <ListBoxItem Content="Inactive"></ListBoxItem>
             <Separator />
         </ListBox>
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <ListView x:Name="listView" ItemsSource="{Binding FilteredCollection}">
-                <ListView.View>
-                    <GridView x:Name="gridView">
-                        <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding Path=TorrentName,UpdateSourceTrigger=PropertyChanged}"/>
-                        <GridViewColumn Header="#" Width="20" DisplayMemberBinding="{Binding Path=Priority,UpdateSourceTrigger=PropertyChanged}"/>
-                        <GridViewColumn Header="Size" Width="50" DisplayMemberBinding="{Binding Path=Size,UpdateSourceTrigger=PropertyChanged}"/>
-                        <GridViewColumn Header="Progress" Width="50" DisplayMemberBinding="{Binding Path=Progress,UpdateSourceTrigger=PropertyChanged,StringFormat=\{0:F1\}%}"/>
-                        <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Path=Status,UpdateSourceTrigger=PropertyChanged}"/>
-                        <GridViewColumn Header="Seeds" Width="75" DisplayMemberBinding="{Binding Path=Seeds,UpdateSourceTrigger=PropertyChanged}"/>
-                        <GridViewColumn Header="Peers" Width="75" DisplayMemberBinding="{Binding Path=Peers,UpdateSourceTrigger=PropertyChanged}"/>
-                        <GridViewColumn Header="DL speed" Width="75" DisplayMemberBinding="{Binding Path=DownloadSpeed,UpdateSourceTrigger=PropertyChanged}"/>
-                        <GridViewColumn Header="UL speed" Width="75" DisplayMemberBinding="{Binding Path=UploadSpeed,UpdateSourceTrigger=PropertyChanged}"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </ScrollViewer>
+        <ListView ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="listView" ItemsSource="{Binding FilteredCollection}">
+            <ListView.View>
+                <GridView x:Name="gridView">
+                    <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding Path=TorrentName,UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="#" Width="20" DisplayMemberBinding="{Binding Path=Priority,UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Size" Width="50" DisplayMemberBinding="{Binding Path=Size,UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Progress" Width="50" DisplayMemberBinding="{Binding Path=Progress,UpdateSourceTrigger=PropertyChanged,StringFormat=\{0:F1\}%}"/>
+                    <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Path=Status,UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Seeds" Width="75" DisplayMemberBinding="{Binding Path=Seeds,UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Peers" Width="75" DisplayMemberBinding="{Binding Path=Peers,UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="DL speed" Width="75" DisplayMemberBinding="{Binding Path=DownloadSpeed,UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="UL speed" Width="75" DisplayMemberBinding="{Binding Path=UploadSpeed,UpdateSourceTrigger=PropertyChanged}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </DockPanel>
 </Window>
