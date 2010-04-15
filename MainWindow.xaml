@@ -17,21 +17,21 @@
         </Menu>
         <ToolBarPanel DockPanel.Dock="Top">
             <ToolBar>
-                <Button x:Name="startButton">
+                <Button x:Name="startButton" IsEnabled="False">
                     <Image Width="32" Height="32">
                         <Image.Source>
                             <BitmapImage UriSource="pack://application:,,/Resources/start.png" />
                         </Image.Source>
                     </Image>
                 </Button>
-                <Button>
+                <Button x:Name="pauseButton" IsEnabled="False">
                     <Image Width="32" Height="32">
                         <Image.Source>
                             <BitmapImage UriSource="pack://application:,,/Resources/pause.png" />
                         </Image.Source>
                     </Image>
                 </Button>
-                <Button>
+                <Button x:Name="stopButton" IsEnabled="False">
                     <Image Width="32" Height="32">
                         <Image.Source>
                             <BitmapImage UriSource="pack://application:,,/Resources/stop.png" />
@@ -39,14 +39,14 @@
                     </Image>
                 </Button>
                 <Separator />
-                <Button>
+                <Button x:Name="downButton" IsEnabled="False">
                     <Image Width="32" Height="32">
                         <Image.Source>
                             <BitmapImage UriSource="pack://application:,,/Resources/down.png" />
                         </Image.Source>
                     </Image>
                 </Button>
-                <Button>
+                <Button x:Name="upButton" IsEnabled="False">
                     <Image Width="32" Height="32">
                         <Image.Source>
                             <BitmapImage UriSource="pack://application:,,/Resources/up.png" />
@@ -54,7 +54,7 @@
                     </Image>
                 </Button>
                 <Separator />
-                <Button>
+                <Button x:Name="removeButton" IsEnabled="False">
                     <Image Width="32" Height="32">
                         <Image.Source>
                             <BitmapImage UriSource="pack://application:,,/Resources/remove.png" />

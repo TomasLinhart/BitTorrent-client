@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -16,6 +19,10 @@ namespace BitTorrent_client
         /// Field for currently show torrents.
         /// </summary>
         private TorrentStatus[] _currentFilter;
+        /// <summary>
+        /// Field for currently selected torrents.
+        /// </summary>
+        private IList _selectedTorrents;
 
         /// <summary>
         /// Collection property of all currenly open torrents 
@@ -35,6 +42,13 @@ namespace BitTorrent_client
             TorrentCollection.CollectionChanged += OnTorrentCollectionChanged;
 
             startButton.Click += OnStartButtonClick;
+            pauseButton.Click += OnPauseButtonClick;
+            stopButton.Click += OnStopButtonClick;
+            downButton.Click += OnDownButtonClick;
+            upButton.Click += OnUpButtonClick;
+            removeButton.Click += OnRemoveButtonClick;
+
+            listView.SelectionChanged += OnListViewSelectionChanged;
 
             listBox.SelectionChanged += OnListBoxSelectionChanged;
 
@@ -46,9 +60,137 @@ namespace BitTorrent_client
             #endregion
         }
 
+        void OnRemoveButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (_selectedTorrents != null)
+            {
+                    foreach (var selectedTorrent in _selectedTorrents)
+                {
+                    // TODO: Remove button action for each selected torrent
+                    //TorrentCollection.Remove((TorrentData) selectedTorrent);
+                }
+            }
+            else
+            {
+                // TODO: (Disable buttons when no selection instead)=>done
+                // TODO: Should this check remain just in case?
+                MessageBox.Show("No torrent selected", "Nothing selected");
+            }
+        }
+
+        void OnUpButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (_selectedTorrents != null)
+            {
+                foreach (var selectedTorrent in _selectedTorrents)
+                {
+                    // TODO: Up button action for each selected torrent
+                    ((TorrentData)selectedTorrent).Priority++;
+                }
+            }
+            else
+            {
+                // TODO: (Disable buttons when no selection instead)=>done
+                // TODO: Should this check remain just in case?
+                MessageBox.Show("No torrent selected", "Nothing selected");
+            }
+        }
+
+        void OnDownButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (_selectedTorrents != null)
+            {
+                foreach (var selectedTorrent in _selectedTorrents)
+                {
+                    // TODO: Down button action for each selected torrent
+                    ((TorrentData)selectedTorrent).Priority--;
+                }
+            }
+            else
+            {
+                // TODO: (Disable buttons when no selection instead)=>done
+                // TODO: Should this check remain just in case?
+                MessageBox.Show("No torrent selected", "Nothing selected");
+            }
+        }
+
+        void OnStopButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (_selectedTorrents != null)
+            {
+                foreach (var selectedTorrent in _selectedTorrents)
+                {
+                    // TODO: Stop button action for each selected torrent
+                    ((TorrentData)selectedTorrent).Status = TorrentStatus.Stopped;
+                }
+            }
+            else
+            {
+                // TODO: (Disable buttons when no selection instead)=>done
+                // TODO: Should this check remain just in case?
+                MessageBox.Show("No torrent selected", "Nothing selected");
+            }
+        }
+
+        void OnPauseButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (_selectedTorrents != null)
+            {
+                foreach (var selectedTorrent in _selectedTorrents)
+                {
+                    // TODO: Pause button action for each selected torrent
+                    ((TorrentData)selectedTorrent).Status = TorrentStatus.Stopped;
+                }
+            }
+            else
+            {
+                // TODO: (Disable buttons when no selection instead)=>done
+                // TODO: Should this check remain just in case?
+                MessageBox.Show("No torrent selected", "Nothing selected");
+            }
+        }
+
+        void OnListViewSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                _selectedTorrents = listView.SelectedItems;
+                startButton.IsEnabled = true;
+                pauseButton.IsEnabled = true;
+                stopButton.IsEnabled = true;
+                downButton.IsEnabled = true;
+                upButton.IsEnabled = true;
+                removeButton.IsEnabled = true;
+            }
+            else
+            {
+                _selectedTorrents = null;
+                startButton.IsEnabled = false;
+                pauseButton.IsEnabled = false;
+                stopButton.IsEnabled = false;
+                downButton.IsEnabled = false;
+                upButton.IsEnabled = false;
+                removeButton.IsEnabled = false;
+            }
+
+        }
+
         private void OnStartButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
-            
+            if (_selectedTorrents != null)
+            {
+                foreach (var selectedTorrent in _selectedTorrents)
+                {
+                    // TODO: Start button action for each selected torrent
+                    ((TorrentData)selectedTorrent).Status = TorrentStatus.Downloading;
+                }
+            }
+            else
+            {
+                // TODO: (Disable buttons when no selection instead)=>done
+                // TODO: Should this check remain just in case?
+                MessageBox.Show("No torrent selected", "Nothing selected");
+            }
         }
 
         #region FOR TESTING ONLY
@@ -62,11 +204,11 @@ namespace BitTorrent_client
 
         private void OnTimerTick(object sender, EventArgs e)
         {
-            TorrentCollection.Add(new TorrentData { TorrentName = "NewlyAdded...", Status = TorrentStatus.Stopped });
-            TorrentCollection.First().TorrentName = "ChangedName";
-            TorrentCollection.First().Priority = 3;
-            TorrentCollection.First().Status = TorrentStatus.Hashing;
-            TorrentCollection.First().Progress = 7.5;
+            //TorrentCollection.Add(new TorrentData { TorrentName = "NewlyAdded...", Status = TorrentStatus.Stopped });
+            //TorrentCollection.First().TorrentName = "ChangedName";
+            //TorrentCollection.First().Priority = 3;
+            //TorrentCollection.First().Status = TorrentStatus.Hashing;
+            //TorrentCollection.First().Progress = 7.5;
 
         }
         #endregion
@@ -103,7 +245,7 @@ namespace BitTorrent_client
                         _currentFilter = new[] { TorrentStatus.Seeding };
                         break;
                     case "Active":
-                        _currentFilter = new[] { TorrentStatus.Seeding, TorrentStatus.Downloading};
+                        _currentFilter = new[] { TorrentStatus.Seeding, TorrentStatus.Downloading };
                         break;
                     case "Inactive":
                         _currentFilter = new[] { TorrentStatus.Stopped };
