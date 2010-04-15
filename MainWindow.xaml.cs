@@ -12,11 +12,19 @@ namespace BitTorrent_client
     public partial class MainWindow
     {
         private readonly DispatcherTimer _timer;
+        /// <summary>
+        /// Field for currently show torrents.
+        /// </summary>
         private TorrentStatus[] _currentFilter;
 
+        /// <summary>
+        /// Collection property of all currenly open torrents 
+        /// </summary>
         public ObservableCollection<TorrentData> TorrentCollection { get; private set; }
-        // TODO: Has to be private?
-        public ObservableCollection<TorrentData> FilteredCollection { get; private set; }
+        /// <summary>
+        /// Collection property of all currenly open torrents 
+        /// </summary>
+        public ObservableCollection<TorrentData> FilteredCollection { get; private set; } // TODO: Has to be private? Even field?
 
         public MainWindow()
         {
@@ -25,6 +33,8 @@ namespace BitTorrent_client
             InitializeComponent();
             _currentFilter = new[] { TorrentStatus.Downloading, TorrentStatus.Seeding, TorrentStatus.Stopped, TorrentStatus.Hashing };
             TorrentCollection.CollectionChanged += OnTorrentCollectionChanged;
+
+            startButton.Click += OnStartButtonClick;
 
             listBox.SelectionChanged += OnListBoxSelectionChanged;
 
@@ -35,6 +45,12 @@ namespace BitTorrent_client
             SetTestData();
             #endregion
         }
+
+        private void OnStartButtonClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+            
+        }
+
         #region FOR TESTING ONLY
         private void SetTestData()
         {
@@ -67,12 +83,12 @@ namespace BitTorrent_client
             }
         }
 
-        void OnTorrentCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void OnTorrentCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             FilterCollection();
         }
 
-        void OnListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var listBoxItem = (((ListBox)sender).SelectedItem as ListBoxItem);
             if (listBoxItem != null)
