@@ -63,6 +63,9 @@ namespace BitTorrent_client
             StartEngine();
         }
 
+        /// <summary>
+        /// Start listening on specific port
+        /// </summary>
         private void StartEngine()
         {
             var engineSettings = new EngineSettings(DownloadPath, Port);
@@ -79,12 +82,24 @@ namespace BitTorrent_client
             engine.DhtEngine.Start(nodes);*/
         }
 
+        /// <summary>
+        /// Gets default settings for torrent
+        /// </summary>
+        /// <returns></returns>
         private TorrentSettings GetDefaultTorrentSettings()
         {
+            // 4 Upload slots - a good ratio is one slot per 5kB of upload speed
+            // 50 open connections - should never really need to be changed
+            // Unlimited download speed - valid range from 0 -> int.Max
+            // Unlimited upload speed - valid range from 0 -> int.Max
             var torrentDefaults = new TorrentSettings(4, 150, 0, 0);
             return torrentDefaults;
         }
 
+        /// <summary>
+        /// Gets a fast resume file
+        /// </summary>
+        /// <returns></returns>
         private BEncodedDictionary GetFastResume()
         {
             try
@@ -97,6 +112,10 @@ namespace BitTorrent_client
             }
         }
 
+        /// <summary>
+        /// Adds a torrent file to a client
+        /// </summary>
+        /// <param name="file">Path to torrent</param>
         public void AddTorrent(string file)
         {
             Torrent torrent = Torrent.Load(file);
@@ -112,6 +131,11 @@ namespace BitTorrent_client
             _torrents.Add(manager);
         }
 
+        /// <summary>
+        /// Finds a TorrentManager with specific TorrentHash
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
         private TorrentManager FindTorrentByHash(TorrentHash hash)
         {
             return (from t in _torrents
@@ -119,6 +143,10 @@ namespace BitTorrent_client
                     select t).SingleOrDefault();
         }
 
+        /// <summary>
+        /// Removes a torrent from a client with specific hash
+        /// </summary>
+        /// <param name="hash"></param>
         public void RemoveTorrent(TorrentHash hash)
         {
             var torrentManager = FindTorrentByHash(hash);
@@ -130,6 +158,10 @@ namespace BitTorrent_client
             }
         }
 
+        /// <summary>
+        /// Pauses a torrent with specific hash
+        /// </summary>
+        /// <param name="hash"></param>
         public void PauseTorrent(TorrentHash hash)
         {
             var torrentManager = FindTorrentByHash(hash);
@@ -137,6 +169,10 @@ namespace BitTorrent_client
                 torrentManager.Pause();
         }
 
+        /// <summary>
+        /// Stops a torrent with specific hash
+        /// </summary>
+        /// <param name="hash"></param>
         public void StopTorrent(TorrentHash hash)
         {
             var torrentManager = FindTorrentByHash(hash);
@@ -144,6 +180,10 @@ namespace BitTorrent_client
                 torrentManager.Stop();
         }
 
+        /// <summary>
+        /// Starts a torrent with specific hash
+        /// </summary>
+        /// <param name="hash"></param>
         public void StartTorrent(TorrentHash hash)
         {
             var torrentManager = FindTorrentByHash(hash);
@@ -151,6 +191,10 @@ namespace BitTorrent_client
                 torrentManager.Stop();
         }
 
+        /// <summary>
+        /// Returns a collection of TorrentData
+        /// </summary>
+        /// <returns></returns>
         public IList<TorrentData> GetTorrentData()
         {
             return (from torrent in _torrents
@@ -168,6 +212,11 @@ namespace BitTorrent_client
                        }).ToList();
         }
 
+
+        /// <summary>
+        /// Shutdowns torrent client and saves unfinished torrents to resume file
+        /// This method must be called when Exit button is pressed!
+        /// </summary>
         public void Shutdown()
         {
             var fastResume = new BEncodedDictionary();
