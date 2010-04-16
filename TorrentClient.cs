@@ -67,6 +67,9 @@ namespace BitTorrent_client
             if (!Directory.Exists(DownloadPath))
                 Directory.CreateDirectory(DownloadPath);
 
+            if (!Directory.Exists(TorrentPath))
+                Directory.CreateDirectory(TorrentPath);
+
             StartEngine();
         }
 
