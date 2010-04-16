@@ -6,8 +6,7 @@
     <DockPanel IsManipulationEnabled="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="Add _torrent"/>
-                <MenuItem Header="Add torrent from _URL" />
+                <MenuItem Header="Add _torrent" Click="OnMenuItemAddClick"/>
                 <Separator />
                 <MenuItem Header="E_xit" />
             </MenuItem>

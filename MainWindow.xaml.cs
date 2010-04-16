@@ -75,7 +75,7 @@ namespace BitTorrent_client
 
             listBox.SelectionChanged += OnListBoxSelectionChanged;
 
-            _statusBarRefreshTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 5, 0) };
+            _statusBarRefreshTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 100) };
             _statusBarRefreshTimer.Tick += OnStatusBarRefreshTimerTick;
             _statusBarRefreshTimer.Start();
 
@@ -231,6 +231,25 @@ namespace BitTorrent_client
                 }
             }
             FilterCollection();
+        }
+
+        private void OnMenuItemAddClick(object sender, RoutedEventArgs e)
+        {
+            var fileDialog = new OpenFileDialog
+            {
+                Filter = "Torrent Files (*.torrent)|*.torrent"
+            };
+
+            fileDialog.ShowDialog();
+
+            if (String.IsNullOrEmpty(fileDialog.FileName)) return;
+
+            _client.AddTorrent(fileDialog.FileName);
+        }
+
+        private void OnMenuItemExitClick(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
