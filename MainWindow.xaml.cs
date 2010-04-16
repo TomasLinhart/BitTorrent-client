@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -40,10 +41,25 @@ namespace BitTorrent_client
 
         public MainWindow()
         {
-            _client = new TorrentClient();
-            
             TorrentCollection = new ObservableCollection<TorrentData>();
             FilteredCollection = new ObservableCollection<TorrentData>();
+
+            _client = new TorrentClient(TorrentCollection);
+
+            AppDomain.CurrentDomain.ProcessExit += delegate { _client.Shutdown(); };
+            AppDomain.CurrentDomain.UnhandledException += 
+                delegate(object sender, UnhandledExceptionEventArgs e)
+                    {
+                        MessageBox.Show("Exception", e.ExceptionObject.ToString()); 
+                        _client.Shutdown();
+                    };
+            Thread.GetDomain().UnhandledException += 
+                delegate(object sender, UnhandledExceptionEventArgs e)
+                    {
+                        MessageBox.Show("Exception", e.ExceptionObject.ToString()); 
+                        _client.Shutdown();
+                    };
+            
             StatusBarStatistics = new Statistics();
             InitializeComponent();
             _currentFilter = new[] { TorrentStatus.Downloading, TorrentStatus.Seeding, TorrentStatus.Stopped, TorrentStatus.Hashing };

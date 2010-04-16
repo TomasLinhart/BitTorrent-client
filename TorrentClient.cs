@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -52,9 +53,11 @@ namespace BitTorrent_client
         public string FastResumeFile { get; set; }
 
         private IList<TorrentManager> _torrents;
-        
-        public TorrentClient()
+        private ObservableCollection<TorrentData> _torrentData;
+
+        public TorrentClient(ObservableCollection<TorrentData> torrentDatas)
         {
+            _torrentData = torrentDatas;
             _torrents = new List<TorrentManager>();
             Port = 80;
             DownloadPath = Path.Combine(Environment.CurrentDirectory, "Downloads");
@@ -139,6 +142,7 @@ namespace BitTorrent_client
             _engine.Register(manager);
 
             _torrents.Add(manager);
+            _torrentData.Add(GetTorrentData(manager));
 
             manager.Start();
         }
@@ -165,6 +169,10 @@ namespace BitTorrent_client
 
             if (torrentManager != null)
             {
+                TorrentData data = (from d in _torrentData
+                                   where d.Hash.ToString() == torrentManager.InfoHash.ToHex()
+                                   select d).SingleOrDefault();
+                _torrentData.Remove(data);
                 _engine.Unregister(torrentManager);
                 _torrents.Remove(torrentManager);
                 File.Delete(Path.Combine(TorrentPath, torrentManager.Torrent.TorrentPath));
@@ -204,25 +212,50 @@ namespace BitTorrent_client
                 torrentManager.Start();
         }
 
+
         /// <summary>
         /// Returns a collection of TorrentData
         /// </summary>
         /// <returns></returns>
-        public IList<TorrentData> GetTorrentData()
+        public TorrentData GetTorrentData(TorrentManager torrent)
         {
-            return (from torrent in _torrents
-                   select new TorrentData()
-                       {
-                           DownloadSpeed = torrent.Monitor.DownloadSpeed, 
-                           Hash = new TorrentHash(torrent.InfoHash.ToHex()),
-                           Peers = torrent.Peers.Leechs,
-                           Progress = torrent.Progress,
-                           Seeds = torrent.Peers.Seeds,
-                           Size = torrent.Torrent.Size,
-                           Status = (TorrentStatus) torrent.State,
-                           TorrentName = torrent.Torrent.Name,
-                           UploadSpeed = torrent.Monitor.UploadSpeed
-                       }).ToList();
+            return new TorrentData()
+                {
+                    DownloadSpeed = torrent.Monitor.DownloadSpeed,
+                    Hash = new TorrentHash(torrent.InfoHash.ToHex()),
+                    Peers = torrent.Peers.Leechs,
+                    Progress = torrent.Progress,
+                    Seeds = torrent.Peers.Seeds,
+                    Size = torrent.Torrent.Size,
+                    Status = (TorrentStatus) torrent.State,
+                    TorrentName = torrent.Torrent.Name,
+                    UploadSpeed = torrent.Monitor.UploadSpeed
+                };
+        }
+
+        public void UpdateTorrentData()
+        {
+            /*var torrents = from manager in _torrents 
+                           from data in _torrentData
+                           where */
+
+            foreach (var torrent in _torrents)
+            {
+                foreach (var data in (from data in _torrentData
+                                      where torrent.InfoHash.ToHex() == data.Hash.ToString()
+                                     select data))
+                {
+                    data.DownloadSpeed = torrent.Monitor.DownloadSpeed;
+                    data.Hash = new TorrentHash(torrent.InfoHash.ToHex());
+                    data.Peers = torrent.Peers.Leechs;
+                    data.Progress = torrent.Progress;
+                    data.Seeds = torrent.Peers.Seeds;
+                    data.Size = torrent.Torrent.Size;
+                    data.Status = (TorrentStatus)torrent.State;
+                    data.TorrentName = torrent.Torrent.Name;
+                    data.UploadSpeed = torrent.Monitor.UploadSpeed;
+                }
+            }
         }
 
 
