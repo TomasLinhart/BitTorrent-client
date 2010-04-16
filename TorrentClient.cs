@@ -60,6 +60,9 @@ namespace BitTorrent_client
             DownloadPath = Path.Combine(Environment.CurrentDirectory, "Downloads");
             FastResumeFile = Path.Combine(Environment.CurrentDirectory, "fastresume.data");
 
+            if (!Directory.Exists(DownloadPath))
+                Directory.CreateDirectory(DownloadPath);
+
             StartEngine();
         }
 
@@ -119,6 +122,10 @@ namespace BitTorrent_client
         public void AddTorrent(string file)
         {
             Torrent torrent = Torrent.Load(file);
+
+            if (_engine.Contains(torrent.InfoHash))
+                return;
+
             TorrentManager manager = new TorrentManager(torrent, DownloadPath, GetDefaultTorrentSettings());
 
             var fastResume = GetFastResume();
@@ -128,6 +135,7 @@ namespace BitTorrent_client
                     new FastResume((BEncodedDictionary)fastResume[torrent.InfoHash.ToHex()]));
             
             _engine.Register(manager);
+
             _torrents.Add(manager);
         }
 
