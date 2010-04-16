@@ -81,7 +81,7 @@ namespace BitTorrent_client
 
             if (String.IsNullOrEmpty(fileDialog.FileName)) return;
 
-            // TODO: torrent file add logic here
+            _client.AddTorrent(fileDialog.FileName);
         }
 
         void OnRemoveButtonClick(object sender, RoutedEventArgs e)
