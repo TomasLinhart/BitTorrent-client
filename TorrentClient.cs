@@ -236,12 +236,11 @@ namespace BitTorrent_client
                 };
         }
 
+        /// <summary>
+        /// Updates ObservableCollection added in constructor with new data.
+        /// </summary>
         public void UpdateTorrentData()
         {
-            /*var torrents = from manager in _torrents 
-                           from data in _torrentData
-                           where */
-
             foreach (var torrent in _torrents)
             {
                 foreach (var data in (from data in _torrentData
