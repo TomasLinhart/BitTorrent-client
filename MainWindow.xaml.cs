@@ -46,7 +46,7 @@ namespace BitTorrent_client
             FilteredCollection = new ObservableCollection<TorrentData>();
             StatusBarStatistics = new Statistics();
             InitializeComponent();
-            _currentFilter = new[] { TorrentStatus.Downloading, TorrentStatus.Seeding, TorrentStatus.Stopped, TorrentStatus.Hashing };
+            _currentFilter = new[] { TorrentStatus.Stopped, TorrentStatus.Paused, TorrentStatus.Downloading, TorrentStatus.Seeding, TorrentStatus.Hashing, TorrentStatus.Stopping, TorrentStatus.Error, TorrentStatus.Metadata };
             TorrentCollection.CollectionChanged += OnTorrentCollectionChanged;
             addButton.Click += OnAddButtonClick;
 
@@ -180,11 +180,11 @@ namespace BitTorrent_client
             //TorrentCollection.Add(new TorrentData { TorrentName = "SeedingTest", Status = TorrentStatus.Seeding });
         }
         #endregion
-
         private void OnStatusBarRefreshTimerTick(object sender, EventArgs e)
         {
             TorrentCollection.Clear();
             // TODO: Update statistics here
+            
             foreach (var torrentData in _client.GetTorrentData())
             {
                 TorrentCollection.Add(torrentData);
@@ -229,7 +229,7 @@ namespace BitTorrent_client
                         _currentFilter = new[] { TorrentStatus.Stopped };
                         break;
                     default:
-                        _currentFilter = new[] { TorrentStatus.Downloading, TorrentStatus.Seeding, TorrentStatus.Stopped, TorrentStatus.Hashing };
+                        _currentFilter = new[] { TorrentStatus.Stopped, TorrentStatus.Paused, TorrentStatus.Downloading, TorrentStatus.Seeding, TorrentStatus.Hashing, TorrentStatus.Stopping, TorrentStatus.Error, TorrentStatus.Metadata };
                         break;
                 }
             }
