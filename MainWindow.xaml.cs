@@ -70,14 +70,12 @@ namespace BitTorrent_client
             startButton.Click += OnStartButtonClick;
             pauseButton.Click += OnPauseButtonClick;
             stopButton.Click += OnStopButtonClick;
-            downButton.Click += OnDownButtonClick;
-            upButton.Click += OnUpButtonClick;
 
             listView.SelectionChanged += OnListViewSelectionChanged;
 
             listBox.SelectionChanged += OnListBoxSelectionChanged;
 
-            _statusBarRefreshTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 500) };
+            _statusBarRefreshTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 5, 0) };
             _statusBarRefreshTimer.Tick += OnStatusBarRefreshTimerTick;
             _statusBarRefreshTimer.Start();
 
@@ -107,42 +105,6 @@ namespace BitTorrent_client
                 foreach (var selectedTorrent in _selectedTorrents)
                 {
                     _client.RemoveTorrent(selectedTorrent.Hash);
-                }
-            }
-            else
-            {
-                // TODO: (Disable buttons when no selection instead)=>done
-                // TODO: Should this check remain just in case?
-                MessageBox.Show("No torrent selected", "Nothing selected");
-            }
-        }
-
-        void OnUpButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (_selectedTorrents != null)
-            {
-                foreach (var selectedTorrent in _selectedTorrents)
-                {
-                    // TODO: Up button action for each selected torrent
-                    ((TorrentData)selectedTorrent).Priority++;
-                }
-            }
-            else
-            {
-                // TODO: (Disable buttons when no selection instead)=>done
-                // TODO: Should this check remain just in case?
-                MessageBox.Show("No torrent selected", "Nothing selected");
-            }
-        }
-
-        void OnDownButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (_selectedTorrents != null)
-            {
-                foreach (var selectedTorrent in _selectedTorrents)
-                {
-                    // TODO: Down button action for each selected torrent
-                    ((TorrentData)selectedTorrent).Priority--;
                 }
             }
             else
@@ -195,8 +157,6 @@ namespace BitTorrent_client
                 startButton.IsEnabled = true;
                 pauseButton.IsEnabled = true;
                 stopButton.IsEnabled = true;
-                downButton.IsEnabled = true;
-                upButton.IsEnabled = true;
                 removeButton.IsEnabled = true;
             }
             else
@@ -205,8 +165,6 @@ namespace BitTorrent_client
                 startButton.IsEnabled = false;
                 pauseButton.IsEnabled = false;
                 stopButton.IsEnabled = false;
-                downButton.IsEnabled = false;
-                upButton.IsEnabled = false;
                 removeButton.IsEnabled = false;
             }
 
@@ -241,7 +199,12 @@ namespace BitTorrent_client
 
         private void OnStatusBarRefreshTimerTick(object sender, EventArgs e)
         {
+            TorrentCollection.Clear();
             // TODO: Update statistics here
+            foreach (var torrentData in _client.GetTorrentData())
+            {
+                TorrentCollection.Add(torrentData);
+            }
         }
 
         private void FilterCollection()

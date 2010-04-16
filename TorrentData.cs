@@ -12,7 +12,6 @@ namespace BitTorrent_client
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string _torrentName;
-        private int _priority;
         private long _size;
         private double _progress;
         private TorrentStatus _status;
@@ -33,16 +32,6 @@ namespace BitTorrent_client
             {
                 _torrentName = value;
                 OnPropertyChanged("TorrentName");
-            }
-        }
-
-        public int Priority
-        {
-            get { return _priority; }
-            set
-            {
-                _priority = value;
-                OnPropertyChanged("Priority");
             }
         }
 
