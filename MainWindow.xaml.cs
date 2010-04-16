@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -15,7 +14,7 @@ namespace BitTorrent_client
     /// </summary>
     public partial class MainWindow
     {
-        private readonly DispatcherTimer _timer;
+        private readonly DispatcherTimer _statusBarRefreshTimer;
         /// <summary>
         /// Field for currently show torrents.
         /// </summary>
@@ -34,10 +33,13 @@ namespace BitTorrent_client
         /// </summary>
         public ObservableCollection<TorrentData> FilteredCollection { get; private set; } // TODO: Has to be private? Even field?
 
+        public Statistics StatusBarStatistics { get; private set; }
+
         public MainWindow()
         {
             TorrentCollection = new ObservableCollection<TorrentData>();
             FilteredCollection = new ObservableCollection<TorrentData>();
+            StatusBarStatistics = new Statistics();
             InitializeComponent();
             _currentFilter = new[] { TorrentStatus.Downloading, TorrentStatus.Seeding, TorrentStatus.Stopped, TorrentStatus.Hashing };
             TorrentCollection.CollectionChanged += OnTorrentCollectionChanged;
@@ -54,10 +56,11 @@ namespace BitTorrent_client
 
             listBox.SelectionChanged += OnListBoxSelectionChanged;
 
+            _statusBarRefreshTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 500) };
+            _statusBarRefreshTimer.Tick += OnStatusBarRefreshTimerTick;
+            _statusBarRefreshTimer.Start();
+
             #region TESTING
-            _timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 3, 0) };
-            _timer.Tick += OnTimerTick;
-            _timer.Start();
             SetTestData();
             #endregion
         }
@@ -191,7 +194,7 @@ namespace BitTorrent_client
 
         }
 
-        private void OnStartButtonClick(object sender, System.Windows.RoutedEventArgs e)
+        private void OnStartButtonClick(object sender, RoutedEventArgs e)
         {
             if (_selectedTorrents != null)
             {
@@ -217,17 +220,12 @@ namespace BitTorrent_client
             TorrentCollection.Add(new TorrentData { TorrentName = "StoppedTest", Status = TorrentStatus.Stopped });
             TorrentCollection.Add(new TorrentData { TorrentName = "SeedingTest", Status = TorrentStatus.Seeding });
         }
-
-        private void OnTimerTick(object sender, EventArgs e)
-        {
-            //TorrentCollection.Add(new TorrentData { TorrentName = "NewlyAdded...", Status = TorrentStatus.Stopped });
-            //TorrentCollection.First().TorrentName = "ChangedName";
-            //TorrentCollection.First().Priority = 3;
-            //TorrentCollection.First().Status = TorrentStatus.Hashing;
-            //TorrentCollection.First().Progress = 7.5;
-
-        }
         #endregion
+
+        private void OnStatusBarRefreshTimerTick(object sender, EventArgs e)
+        {
+            // TODO: Update statistics here
+        }
 
         private void FilterCollection()
         {

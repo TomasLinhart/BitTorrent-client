@@ -18,8 +18,6 @@ namespace BitTorrent_client
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-
-
         private string _torrentName;
         private int _priority;
         private int _size;
