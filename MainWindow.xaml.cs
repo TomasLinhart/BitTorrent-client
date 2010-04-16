@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using Microsoft.Win32;
+using System.Collections.Generic;
 
 namespace BitTorrent_client
 {
@@ -22,7 +23,7 @@ namespace BitTorrent_client
         /// <summary>
         /// Field for currently selected torrents.
         /// </summary>
-        private IList _selectedTorrents;
+        private IEnumerable<TorrentData> _selectedTorrents;
 
         /// <summary>
         /// Collection property of all currenly open torrents 
@@ -35,8 +36,12 @@ namespace BitTorrent_client
 
         public Statistics StatusBarStatistics { get; private set; }
 
+        private TorrentClient _client;
+
         public MainWindow()
         {
+            _client = new TorrentClient();
+            
             TorrentCollection = new ObservableCollection<TorrentData>();
             FilteredCollection = new ObservableCollection<TorrentData>();
             StatusBarStatistics = new Statistics();
@@ -74,7 +79,7 @@ namespace BitTorrent_client
 
             if (String.IsNullOrEmpty(fileDialog.FileName)) return;
 
-            // TODO: torrent file add logic here
+            _client.AddTorrent(fileDialog.FileName);
         }
 
         void OnRemoveButtonClick(object sender, RoutedEventArgs e)
@@ -83,8 +88,7 @@ namespace BitTorrent_client
             {
                 foreach (var selectedTorrent in _selectedTorrents)
                 {
-                    // TODO: Remove button action for each selected torrent
-                    //TorrentCollection.Remove((TorrentData) selectedTorrent);
+                    _client.RemoveTorrent(selectedTorrent.Hash);
                 }
             }
             else
@@ -101,8 +105,7 @@ namespace BitTorrent_client
             {
                 foreach (var selectedTorrent in _selectedTorrents)
                 {
-                    // TODO: Stop button action for each selected torrent
-                    ((TorrentData)selectedTorrent).Status = TorrentStatus.Stopped;
+                    _client.StopTorrent(selectedTorrent.Hash);
                 }
             }
             else
@@ -119,8 +122,7 @@ namespace BitTorrent_client
             {
                 foreach (var selectedTorrent in _selectedTorrents)
                 {
-                    // TODO: Pause button action for each selected torrent
-                    ((TorrentData)selectedTorrent).Status = TorrentStatus.Stopped;
+                    _client.PauseTorrent(selectedTorrent.Hash);
                 }
             }
             else
@@ -135,7 +137,7 @@ namespace BitTorrent_client
         {
             if (e.AddedItems.Count > 0)
             {
-                _selectedTorrents = listView.SelectedItems;
+                _selectedTorrents = listView.SelectedItems.Cast<TorrentData>();
                 startButton.IsEnabled = true;
                 pauseButton.IsEnabled = true;
                 stopButton.IsEnabled = true;
@@ -158,8 +160,7 @@ namespace BitTorrent_client
             {
                 foreach (var selectedTorrent in _selectedTorrents)
                 {
-                    // TODO: Start button action for each selected torrent
-                    ((TorrentData)selectedTorrent).Status = TorrentStatus.Downloading;
+                    _client.StartTorrent(selectedTorrent.Hash);
                 }
             }
             else
