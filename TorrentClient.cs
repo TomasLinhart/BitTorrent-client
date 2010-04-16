@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using MonoTorrent.BEncoding;
 using MonoTorrent.Client;
 using MonoTorrent.Client.Encryption;
@@ -47,6 +48,7 @@ namespace BitTorrent_client
 
         public int Port { get; set; }
         public string DownloadPath { get; set; }
+        //public string TorrentPath { get; set; }
         public string FastResumeFile { get; set; }
 
         private IList<TorrentManager> _torrents;
@@ -164,6 +166,28 @@ namespace BitTorrent_client
                            TorrentName = torrent.Torrent.Name,
                            UploadSpeed = torrent.Monitor.UploadSpeed
                        }).ToList();
+        }
+
+        public void Shutdown()
+        {
+            var fastResume = new BEncodedDictionary();
+
+            foreach (var torrent in _torrents)
+            {
+                torrent.Stop();
+
+                while (torrent.State != TorrentState.Stopped)
+                {
+                    Thread.Sleep(250);
+                }
+
+                fastResume.Add(torrent.Torrent.InfoHash.ToHex(), torrent.SaveFastResume().Encode());
+            }
+
+            File.WriteAllBytes(FastResumeFile, fastResume.Encode());
+            _engine.Dispose();
+
+            Thread.Sleep(2000);
         }
     }
 }
