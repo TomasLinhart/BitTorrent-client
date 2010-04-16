@@ -59,7 +59,7 @@ namespace BitTorrent_client
 
             listBox.SelectionChanged += OnListBoxSelectionChanged;
 
-            _statusBarRefreshTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 500) };
+            _statusBarRefreshTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 5, 0) };
             _statusBarRefreshTimer.Tick += OnStatusBarRefreshTimerTick;
             _statusBarRefreshTimer.Start();
 
@@ -183,7 +183,12 @@ namespace BitTorrent_client
 
         private void OnStatusBarRefreshTimerTick(object sender, EventArgs e)
         {
+            TorrentCollection.Clear();
             // TODO: Update statistics here
+            foreach (var torrentData in _client.GetTorrentData())
+            {
+                TorrentCollection.Add(torrentData);
+            }
         }
 
         private void FilterCollection()
