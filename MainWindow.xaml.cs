@@ -33,7 +33,7 @@ namespace BitTorrent_client
         /// <summary>
         /// Collection property of all currenly open torrents 
         /// </summary>
-        public ObservableCollection<TorrentData> FilteredCollection { get; private set; } // TODO: Has to be private? Even field?
+        public ObservableCollection<TorrentData> FilteredCollection { get; private set; } 
 
         public Statistics StatusBarStatistics { get; private set; }
 
@@ -107,9 +107,7 @@ namespace BitTorrent_client
                 }
             }
             else
-            {
-                // TODO: (Disable buttons when no selection instead)=>done
-                // TODO: Should this check remain just in case?
+            {                
                 MessageBox.Show("No torrent selected", "Nothing selected");
             }
         }
@@ -125,8 +123,6 @@ namespace BitTorrent_client
             }
             else
             {
-                // TODO: (Disable buttons when no selection instead)=>done
-                // TODO: Should this check remain just in case?
                 MessageBox.Show("No torrent selected", "Nothing selected");
             }
         }
@@ -142,8 +138,6 @@ namespace BitTorrent_client
             }
             else
             {
-                // TODO: (Disable buttons when no selection instead)=>done
-                // TODO: Should this check remain just in case?
                 MessageBox.Show("No torrent selected", "Nothing selected");
             }
         }
@@ -180,8 +174,6 @@ namespace BitTorrent_client
             }
             else
             {
-                // TODO: (Disable buttons when no selection instead)=>done
-                // TODO: Should this check remain just in case?
                 MessageBox.Show("No torrent selected", "Nothing selected");
             }
         }
@@ -218,7 +210,7 @@ namespace BitTorrent_client
             var listBoxItem = (((ListBox)sender).SelectedItem as ListBoxItem);
             if (listBoxItem != null)
             {
-                // TODO: Am i doing it right?
+                
                 switch (listBoxItem.Content.ToString())
                 {
                     case "Downloading":
