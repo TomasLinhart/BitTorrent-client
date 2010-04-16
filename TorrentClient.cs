@@ -137,6 +137,8 @@ namespace BitTorrent_client
             _engine.Register(manager);
 
             _torrents.Add(manager);
+
+            manager.Start();
         }
 
         /// <summary>
@@ -196,7 +198,7 @@ namespace BitTorrent_client
         {
             var torrentManager = FindTorrentByHash(hash);
             if (torrentManager != null)
-                torrentManager.Stop();
+                torrentManager.Start();
         }
 
         /// <summary>
