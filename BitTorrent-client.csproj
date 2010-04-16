@@ -60,9 +60,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Preferences.cs" />
+    <Compile Include="TorrentStatus.cs" />
+    <Compile Include="TorrentClient.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="TorrentData.cs" />
+    <Compile Include="TorrentHash.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

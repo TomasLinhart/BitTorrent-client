@@ -215,10 +215,10 @@ namespace BitTorrent_client
         #region FOR TESTING ONLY
         private void SetTestData()
         {
-            TorrentCollection.Add(new TorrentData { TorrentName = "HashingTest", Status = TorrentStatus.Hashing });
-            TorrentCollection.Add(new TorrentData { TorrentName = "DownloadingTest", Status = TorrentStatus.Downloading });
-            TorrentCollection.Add(new TorrentData { TorrentName = "StoppedTest", Status = TorrentStatus.Stopped });
-            TorrentCollection.Add(new TorrentData { TorrentName = "SeedingTest", Status = TorrentStatus.Seeding });
+            //TorrentCollection.Add(new TorrentData { TorrentName = "HashingTest", Status = TorrentStatus.Hashing });
+            //TorrentCollection.Add(new TorrentData { TorrentName = "DownloadingTest", Status = TorrentStatus.Downloading });
+            //TorrentCollection.Add(new TorrentData { TorrentName = "StoppedTest", Status = TorrentStatus.Stopped });
+            //TorrentCollection.Add(new TorrentData { TorrentName = "SeedingTest", Status = TorrentStatus.Seeding });
         }
         #endregion
 

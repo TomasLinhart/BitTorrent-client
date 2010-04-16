@@ -3,24 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using MonoTorrent.Client;
 
 namespace BitTorrent_client
 {
-    public enum TorrentStatus
-    {
-        Stopped = 0,
-        Seeding = 1,
-        Downloading = 2,
-        Hashing = 3
-    } ;
-
     public class TorrentData : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string _torrentName;
         private int _priority;
-        private int _size;
+        private long _size;
         private double _progress;
         private TorrentStatus _status;
         private int _seeds;
@@ -28,6 +21,10 @@ namespace BitTorrent_client
         private double _downloadSpeed;
         private double _uploadSpeed;
 
+        public TorrentHash Hash
+        {
+            get; set;
+        }
 
         public string TorrentName
         {
@@ -59,7 +56,7 @@ namespace BitTorrent_client
             }
         }
 
-        public int Size
+        public long Size
         {
             get { return _size; }
             set
