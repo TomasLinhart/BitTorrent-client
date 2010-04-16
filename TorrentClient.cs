@@ -22,6 +22,11 @@ namespace BitTorrent_client
             get { return _engine.TotalUploadSpeed; }
         }
 
+        public int TotalDownloadSpeed
+        {
+            get { return _engine.TotalDownloadSpeed; }
+        }
+
         public int DiskReadRate
         {
             get { return _engine.DiskManager.ReadRate; }
@@ -59,7 +64,7 @@ namespace BitTorrent_client
         {
             _torrentData = torrentDatas;
             _torrents = new List<TorrentManager>();
-            Port = 80;
+            Port = 8080;
             DownloadPath = Path.Combine(Environment.CurrentDirectory, "Downloads");
             TorrentPath = Path.Combine(Environment.CurrentDirectory, "Torrents");
             FastResumeFile = Path.Combine(TorrentPath, "fastresume.data");
@@ -85,7 +90,9 @@ namespace BitTorrent_client
             _engine = new ClientEngine(engineSettings);
             _engine.ChangeListenEndpoint(new IPEndPoint(IPAddress.Any, Port));
 
-            foreach (string file in Directory.GetFiles(TorrentPath))
+            foreach (string file in from t in Directory.GetFiles(TorrentPath)
+                                    where t.EndsWith(".torrent")
+                                    select t)
             {
                 AddTorrent(file);
             }
@@ -127,12 +134,16 @@ namespace BitTorrent_client
         /// <param name="file">Path to torrent</param>
         public void AddTorrent(string file)
         {
-            Torrent torrent = Torrent.Load(file);
+            var fileInfo = new FileInfo(file);
+            var newFile = Path.Combine(TorrentPath, fileInfo.Name);
+
+            if (!File.Exists(newFile))
+                File.Copy(file, newFile);
+
+            Torrent torrent = Torrent.Load(newFile);
 
             if (_engine.Contains(torrent.InfoHash))
                 return;
-
-            File.Copy(file, Path.Combine(TorrentPath, file));
 
             TorrentManager manager = new TorrentManager(torrent, DownloadPath, GetDefaultTorrentSettings());
 
@@ -176,9 +187,12 @@ namespace BitTorrent_client
                                    where d.Hash.ToString() == torrentManager.InfoHash.ToHex()
                                    select d).SingleOrDefault();
                 _torrentData.Remove(data);
+                torrentManager.Stop();
                 _engine.Unregister(torrentManager);
                 _torrents.Remove(torrentManager);
-                File.Delete(Path.Combine(TorrentPath, torrentManager.Torrent.TorrentPath));
+
+                if (File.Exists(torrentManager.Torrent.TorrentPath))
+                    File.Delete(torrentManager.Torrent.TorrentPath);
             }
         }
 

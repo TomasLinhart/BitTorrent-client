@@ -79,6 +79,8 @@ namespace BitTorrent_client
             _statusBarRefreshTimer.Tick += OnStatusBarRefreshTimerTick;
             _statusBarRefreshTimer.Start();
 
+            listBox.SelectedIndex = 0;
+
             #region TESTING
             SetTestData();
             #endregion
@@ -199,12 +201,12 @@ namespace BitTorrent_client
 
         private void OnStatusBarRefreshTimerTick(object sender, EventArgs e)
         {
-            TorrentCollection.Clear();
-            // TODO: Update statistics here
-            /*foreach (var torrentData in _client.GetTorrentData())
-            {
-                TorrentCollection.Add(torrentData);
-            }*/
+            _client.UpdateTorrentData();
+
+            StatusBarStatistics.OverallDownloadSpeed = _client.TotalDownloadSpeed / 1024;
+            StatusBarStatistics.OverallUploadSpeed = _client.TotalUploadSpeed / 1024;
+            StatusBarStatistics.TotalDownloaded = _client.TotalWritten / 1024 / 1024;
+            StatusBarStatistics.TotalUploaded = _client.TotalRead / 1024 / 1024;
         }
 
         private void FilterCollection()

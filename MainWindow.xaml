@@ -80,7 +80,6 @@
             </StatusBarItem>
             <Separator Grid.Column="1"/>
             <StatusBarItem Grid.Column="2">
-                <TextBlock Text="{Binding Path=StatusBarStatistics.TotalDhtNodes, UpdateSourceTrigger=PropertyChanged,StringFormat=DHT: \{0\} nodes}"/>
             </StatusBarItem>
             <Separator Grid.Column="3"/>
             <StatusBarItem Grid.Column="4">
