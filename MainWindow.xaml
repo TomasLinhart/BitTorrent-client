@@ -72,8 +72,52 @@
             </ToolBar>
         </ToolBarPanel>
         <StatusBar DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
             <StatusBarItem>
-                <TextBlock>U: 100 kb/s</TextBlock>
+                <TextBlock Text=""></TextBlock>
+            </StatusBarItem>
+            <Separator Grid.Column="1"/>
+            <StatusBarItem Grid.Column="2">
+                <TextBlock Text="{Binding Path=StatusBarStatistics.TotalDhtNodes, UpdateSourceTrigger=PropertyChanged,StringFormat=DHT: \{0\} nodes}"/>
+            </StatusBarItem>
+            <Separator Grid.Column="3"/>
+            <StatusBarItem Grid.Column="4">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="D: {0:F1} kB/s T: {1:F1} MB">
+                            <Binding Path="StatusBarStatistics.OverallDownloadSpeed" UpdateSourceTrigger="PropertyChanged"/>
+                            <Binding Path="StatusBarStatistics.TotalDownloaded" UpdateSourceTrigger="PropertyChanged" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StatusBarItem>
+            <Separator Grid.Column="5"/>
+            <StatusBarItem Grid.Column="6">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="U: {0:F1} kB/s T: {1:F1} MB">
+                            <Binding Path="StatusBarStatistics.OverallUploadSpeed" UpdateSourceTrigger="PropertyChanged" />
+                            <Binding Path="StatusBarStatistics.TotalUploaded" UpdateSourceTrigger="PropertyChanged" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
             </StatusBarItem>
         </StatusBar>
 
