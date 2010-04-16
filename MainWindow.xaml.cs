@@ -70,6 +70,7 @@ namespace BitTorrent_client
             startButton.Click += OnStartButtonClick;
             pauseButton.Click += OnPauseButtonClick;
             stopButton.Click += OnStopButtonClick;
+            configButton.Click += OnConfigButtonClick;
 
             listView.SelectionChanged += OnListViewSelectionChanged;
 
@@ -82,6 +83,11 @@ namespace BitTorrent_client
             #region TESTING
             SetTestData();
             #endregion
+        }
+
+        void OnConfigButtonClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         void OnAddButtonClick(object sender, RoutedEventArgs e)

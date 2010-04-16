@@ -54,6 +54,13 @@
                     </Image>
                 </Button>
                 <Separator />
+                <Button x:Name="configButton" IsEnabled="False">
+                    <Image Width="32" Height="32">
+                        <Image.Source>
+                            <BitmapImage UriSource="pack://application:,,/Resources/config.png" />
+                        </Image.Source>
+                    </Image>
+                </Button>
             </ToolBar>
         </ToolBarPanel>
         <StatusBar DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
