@@ -48,7 +48,7 @@ namespace BitTorrent_client
 
         public int Port { get; set; }
         public string DownloadPath { get; set; }
-        //public string TorrentPath { get; set; }
+        public string TorrentPath { get; set; }
         public string FastResumeFile { get; set; }
 
         private IList<TorrentManager> _torrents;
@@ -58,7 +58,8 @@ namespace BitTorrent_client
             _torrents = new List<TorrentManager>();
             Port = 80;
             DownloadPath = Path.Combine(Environment.CurrentDirectory, "Downloads");
-            FastResumeFile = Path.Combine(Environment.CurrentDirectory, "fastresume.data");
+            TorrentPath = Path.Combine(Environment.CurrentDirectory, "Torrents");
+            FastResumeFile = Path.Combine(TorrentPath, "fastresume.data");
 
             if (!Directory.Exists(DownloadPath))
                 Directory.CreateDirectory(DownloadPath);
@@ -78,11 +79,10 @@ namespace BitTorrent_client
             _engine = new ClientEngine(engineSettings);
             _engine.ChangeListenEndpoint(new IPEndPoint(IPAddress.Any, Port));
 
-            /*DhtListener dhtListner = new DhtListener(new IPEndPoint(IPAddress.Any, port));
-            DhtEngine dht = new DhtEngine(dhtListner);
-            engine.RegisterDht(dht);
-            dhtListner.Start();
-            engine.DhtEngine.Start(nodes);*/
+            foreach (string file in Directory.GetFiles(TorrentPath))
+            {
+                AddTorrent(file);
+            }
         }
 
         /// <summary>
@@ -126,6 +126,8 @@ namespace BitTorrent_client
             if (_engine.Contains(torrent.InfoHash))
                 return;
 
+            File.Copy(file, Path.Combine(TorrentPath, file));
+
             TorrentManager manager = new TorrentManager(torrent, DownloadPath, GetDefaultTorrentSettings());
 
             var fastResume = GetFastResume();
@@ -165,6 +167,7 @@ namespace BitTorrent_client
             {
                 _engine.Unregister(torrentManager);
                 _torrents.Remove(torrentManager);
+                File.Delete(Path.Combine(TorrentPath, torrentManager.Torrent.TorrentPath));
             }
         }
 
