@@ -201,10 +201,10 @@ namespace BitTorrent_client
         {
             TorrentCollection.Clear();
             // TODO: Update statistics here
-            foreach (var torrentData in _client.GetTorrentData())
+            /*foreach (var torrentData in _client.GetTorrentData())
             {
                 TorrentCollection.Add(torrentData);
-            }
+            }*/
         }
 
         private void FilterCollection()
