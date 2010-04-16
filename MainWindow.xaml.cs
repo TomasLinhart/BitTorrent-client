@@ -70,7 +70,6 @@ namespace BitTorrent_client
             startButton.Click += OnStartButtonClick;
             pauseButton.Click += OnPauseButtonClick;
             stopButton.Click += OnStopButtonClick;
-            configButton.Click += OnConfigButtonClick;
 
             listView.SelectionChanged += OnListViewSelectionChanged;
 
@@ -81,16 +80,8 @@ namespace BitTorrent_client
             _statusBarRefreshTimer.Start();
 
             listBox.SelectedIndex = 0;
-
-            #region TESTING
-            SetTestData();
-            #endregion
         }
 
-        void OnConfigButtonClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
 
         void OnAddButtonClick(object sender, RoutedEventArgs e)
         {
@@ -195,15 +186,6 @@ namespace BitTorrent_client
             }
         }
 
-        #region FOR TESTING ONLY
-        private void SetTestData()
-        {
-            //TorrentCollection.Add(new TorrentData { TorrentName = "HashingTest", Status = TorrentStatus.Hashing });
-            //TorrentCollection.Add(new TorrentData { TorrentName = "DownloadingTest", Status = TorrentStatus.Downloading });
-            //TorrentCollection.Add(new TorrentData { TorrentName = "StoppedTest", Status = TorrentStatus.Stopped });
-            //TorrentCollection.Add(new TorrentData { TorrentName = "SeedingTest", Status = TorrentStatus.Seeding });
-        }
-        #endregion
         private void OnStatusBarRefreshTimerTick(object sender, EventArgs e)
         {
             _client.UpdateTorrentData();
