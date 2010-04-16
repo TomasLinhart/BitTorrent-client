@@ -60,11 +60,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ConfigDialog.xaml.cs">
+      <DependentUpon>ConfigDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TorrentStatus.cs" />
     <Compile Include="TorrentClient.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="TorrentData.cs" />
     <Compile Include="TorrentHash.cs" />
+    <Page Include="ConfigDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

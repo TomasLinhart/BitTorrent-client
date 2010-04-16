@@ -47,7 +47,7 @@ namespace BitTorrent_client
 
         public long Size
         {
-            get { return _size; }
+            get { return _size/1024/1024; }
             set
             {
                 _size = value;
@@ -87,7 +87,7 @@ namespace BitTorrent_client
 
         public double DownloadSpeed
         {
-            get { return _downloadSpeed; }
+            get { return _downloadSpeed/1024; }
             set
             {
                 _downloadSpeed = value;
@@ -97,7 +97,7 @@ namespace BitTorrent_client
 
         public double UploadSpeed
         {
-            get { return _uploadSpeed; }
+            get { return _uploadSpeed/1024; }
             set
             {
                 _uploadSpeed = value;
