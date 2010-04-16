@@ -49,8 +49,6 @@ namespace BitTorrent_client
             startButton.Click += OnStartButtonClick;
             pauseButton.Click += OnPauseButtonClick;
             stopButton.Click += OnStopButtonClick;
-            downButton.Click += OnDownButtonClick;
-            upButton.Click += OnUpButtonClick;
 
             listView.SelectionChanged += OnListViewSelectionChanged;
 
@@ -87,42 +85,6 @@ namespace BitTorrent_client
                 {
                     // TODO: Remove button action for each selected torrent
                     //TorrentCollection.Remove((TorrentData) selectedTorrent);
-                }
-            }
-            else
-            {
-                // TODO: (Disable buttons when no selection instead)=>done
-                // TODO: Should this check remain just in case?
-                MessageBox.Show("No torrent selected", "Nothing selected");
-            }
-        }
-
-        void OnUpButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (_selectedTorrents != null)
-            {
-                foreach (var selectedTorrent in _selectedTorrents)
-                {
-                    // TODO: Up button action for each selected torrent
-                    ((TorrentData)selectedTorrent).Priority++;
-                }
-            }
-            else
-            {
-                // TODO: (Disable buttons when no selection instead)=>done
-                // TODO: Should this check remain just in case?
-                MessageBox.Show("No torrent selected", "Nothing selected");
-            }
-        }
-
-        void OnDownButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (_selectedTorrents != null)
-            {
-                foreach (var selectedTorrent in _selectedTorrents)
-                {
-                    // TODO: Down button action for each selected torrent
-                    ((TorrentData)selectedTorrent).Priority--;
                 }
             }
             else
@@ -177,8 +139,6 @@ namespace BitTorrent_client
                 startButton.IsEnabled = true;
                 pauseButton.IsEnabled = true;
                 stopButton.IsEnabled = true;
-                downButton.IsEnabled = true;
-                upButton.IsEnabled = true;
                 removeButton.IsEnabled = true;
             }
             else
@@ -187,8 +147,6 @@ namespace BitTorrent_client
                 startButton.IsEnabled = false;
                 pauseButton.IsEnabled = false;
                 stopButton.IsEnabled = false;
-                downButton.IsEnabled = false;
-                upButton.IsEnabled = false;
                 removeButton.IsEnabled = false;
             }
 

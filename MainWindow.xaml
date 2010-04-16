@@ -54,21 +54,6 @@
                     </Image>
                 </Button>
                 <Separator />
-                <Button x:Name="downButton" IsEnabled="False">
-                    <Image Width="32" Height="32">
-                        <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,/Resources/down.png" />
-                        </Image.Source>
-                    </Image>
-                </Button>
-                <Button x:Name="upButton" IsEnabled="False">
-                    <Image Width="32" Height="32">
-                        <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,/Resources/up.png" />
-                        </Image.Source>
-                    </Image>
-                </Button>
-                <Separator />
             </ToolBar>
         </ToolBarPanel>
         <StatusBar DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
@@ -133,7 +118,6 @@
             <ListView.View>
                 <GridView x:Name="gridView">
                     <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding Path=TorrentName,UpdateSourceTrigger=PropertyChanged}"/>
-                    <GridViewColumn Header="#" Width="20" DisplayMemberBinding="{Binding Path=Priority,UpdateSourceTrigger=PropertyChanged}"/>
                     <GridViewColumn Header="Size" Width="50" DisplayMemberBinding="{Binding Path=Size,UpdateSourceTrigger=PropertyChanged}"/>
                     <GridViewColumn Header="Progress" Width="50" DisplayMemberBinding="{Binding Path=Progress,UpdateSourceTrigger=PropertyChanged,StringFormat=\{0:F1\}%}"/>
                     <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Path=Status,UpdateSourceTrigger=PropertyChanged}"/>
